@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Routes,Route} from "react-router-dom"
+import Form from "./routes/form/Form";
+import { AutoComplete, Layout, Menu } from "antd";
+import SideBar from "./components/SideBar";
 
-function App() {
+export default function() {
+  const { Content } = Layout
+
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Layout>
+          <SideBar />
+          <Content>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Form />}/>
+                <Route path="/ss" element={<Form />}/>
+              </Routes>
+            </BrowserRouter>
+          </Content>
+      </Layout>
+    </>
   );
 }
 
-export default App;
+
+
