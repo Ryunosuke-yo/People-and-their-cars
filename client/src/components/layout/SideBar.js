@@ -1,6 +1,6 @@
 import { Typography, Menu, Layout } from 'antd';
 import { UserOutlined, UserAddOutlined, CarOutlined} from '@ant-design/icons';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 
 const { Title } = Typography;
@@ -12,15 +12,18 @@ const getItem = (label, key, icon)=> {
 }
 
 export default function(){
+    const navigate = useNavigate()
 
     const onClick = (e)=>{
-        console.log(e.key)
+        // console.log(e)
+        e.key === "cars" ? navigate("/cars") : 
+            navigate("/people")
     }
 
     const items = [
-        getItem('Registration', 'reg', <UserAddOutlined />),
+        // getItem('Registration', 'reg', <UserAddOutlined />),
         getItem('People', 'people', <UserOutlined />),
-        getItem('Cards', 'cards', <CarOutlined />),
+        getItem('Cars', 'cars', <CarOutlined />),
     ]
 
     return (
@@ -32,8 +35,11 @@ export default function(){
 }
 
 const siderStyle = {
-    overflow : "auto",
-    height : "100vh",
-    padding : "1rem"
+    overflow: 'auto',
+    height: '100vh',
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    bottom: 0,
   }
   

@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './css/index.css';
 import App from './App';
-import { Provider } from 'react-redux';
-import store from './redux/store';
 import {
   ApolloClient,
   InMemoryCache,
@@ -22,10 +20,8 @@ const client = new ApolloClient({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
       <ApolloProvider client={client}>
         <App />
       </ApolloProvider>
-    </Provider>
   </React.StrictMode>
 );
