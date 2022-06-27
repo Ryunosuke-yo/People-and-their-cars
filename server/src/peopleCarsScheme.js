@@ -1,5 +1,10 @@
 import { gql } from 'apollo-server-express'
 import { people, cars } from './people_cars.js'
+import pkg from "lodash"
+
+
+const {find} = pkg;
+
 
 const typeDefs = gql`
     type People {
@@ -25,6 +30,8 @@ const typeDefs = gql`
       type Mutation {
         addPeople(id : String!, firstName : String!, lastName : String!) : People
         addCars(year: Int!, make : String!, model: String!, price: Float!, personId: String!, id: String!) : Car
+        updatePeople(id : String!, firstName: String!, lastName: String!) : People
+        updateCar(year: Int!, make : String!, model: String!, price: Float!, personId: String!, id: String!) : Car
       }
 `
 
@@ -62,6 +69,27 @@ const resolvers = {
 
         cars.push(newCar)
         return newCar
+    },
+    updatePeople (root, args) {
+      const peopleToUpdate = find(people, {id : args.id})
+      console.log(peopleToUpdate)
+
+      peopleToUpdate.firstName = args.firstName
+      peopleToUpdate.lastName = args.lastName
+
+      return peopleToUpdate
+    },
+    updateCar (root, args) {
+      const carToUpdate = find(cars, {id : args.id})
+      const {make, model, year, price, personId} = args
+      carToUpdate.make = make
+      carToUpdate.year = year
+      carToUpdate.price = price
+      carToUpdate.make = make
+      carToUpdate.personId = personId
+      carToUpdate.model = model
+
+      return carToUpdate
     }
   }
 }

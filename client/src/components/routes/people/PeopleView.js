@@ -3,7 +3,7 @@ import PeopleForm from "../../form/forms/PeopleForm";
 import { gql, useQuery } from '@apollo/client';
 import { GET_PEOPLE } from "../../../graphql/query";
 import Loading from "../../loading/Loading";
-import Context from "../../context/Context";
+import Context from "../../context_reducer/Context";
 
 
 export default function(){

@@ -1,11 +1,16 @@
 import { Button, Card } from "antd";
-import { useContext, useEffect, useState } from "react";
-import Context from "../../context/Context";
+import { useContext, useEffect, useReducer, useState } from "react";
+import Context from "../../context_reducer/Context";
+import { initialState, reducer } from "../../context_reducer/Reducer";
+import UpdatePeopleForm from "../../form/forms/updateForm/UpdatePeopleForm";
 import CarCard from "./subCard/CarCard";
 
 
 export default function({peopleData}){
     const [filteredCars, setFilteredCars] = useState([])
+
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const {isUpdatePeople} = state
 
     const {carData, isCar} = useContext(Context)
 
@@ -16,33 +21,28 @@ export default function({peopleData}){
             const filteredCars = carData?.filter(car=> car.personId === id)
             setFilteredCars(filteredCars)
         }
+        
     }, [carData])
     
     
     const mapCars = filteredCars?.map(car=>  <CarCard car={car} key={car.id}/>)
+
+    const clickEditBtn = ()=>{
+        dispatch({type : "IS_UPDATE_PEOPLE", payload : state.isUpdatePeople = !state.isUpdatePeople})
+        console.log("cli")
+    }
 
 
     const title = `${firstName} ${lastName}`
 
     return (
         <Card title={title}>
+            {state.isUpdatePeople && <UpdatePeopleForm peopleData={peopleData}/>}
             <div style={btnCon}>
-            <Button>Edit</Button>
+            <Button onClick={clickEditBtn}>Edit</Button>
             <Button>Delete</Button>
             </div>
             {isCar ? mapCars : null}
-            {/* <Card type="inner">
-                {firstName}
-            </Card>
-            <Card type="inner">
-                {lastName}
-            </Card> */}
-            {/* <Card type="inner">
-                inner
-            </Card>
-            <Card type="inner">
-                inner
-            </Card> */}
         </Card>
     )
 }

@@ -3,7 +3,7 @@ import CarForm from "../../form/forms/CarForm";
 import { GET_PEOPLE, GET_CAR } from "../../../graphql/query";
 import { useQuery } from "@apollo/client";
 import Loading from "../../loading/Loading";
-import Context from "../../context/Context";
+import Context from "../../context_reducer/Context";
 
 
 export default function(){
