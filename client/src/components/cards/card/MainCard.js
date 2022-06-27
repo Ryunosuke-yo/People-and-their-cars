@@ -1,9 +1,13 @@
+import { useMutation } from "@apollo/client";
 import { Button, Card } from "antd";
 import { useContext, useEffect, useReducer, useState } from "react";
+import { DELETE_PEOPLE, GET_PEOPLE } from "../../../graphql/query";
 import Context from "../../context_reducer/Context";
 import { initialState, reducer } from "../../context_reducer/Reducer";
 import UpdatePeopleForm from "../../form/forms/updateForm/UpdatePeopleForm";
 import CarCard from "./subCard/CarCard";
+import { filter } from 'lodash'
+
 
 
 export default function({peopleData}){
@@ -16,6 +20,18 @@ export default function({peopleData}){
 
     const {firstName, lastName, id} = peopleData
 
+    const [deletePeople] = useMutation(DELETE_PEOPLE, {
+        update(cache, {data: {deletePeople}}) {
+            const {people} = cache.readQuery({query : GET_PEOPLE})
+
+            cache.writeQuery({
+                query : GET_PEOPLE,
+                data: {
+                    people : filter(people, p=> p.id !== deletePeople.id)
+                }
+            })
+        }
+    })
     useEffect(()=>{
         if (isCar){
             const filteredCars = carData?.filter(car=> car.personId === id)
@@ -32,6 +48,17 @@ export default function({peopleData}){
         console.log("cli")
     }
 
+    const clickDeleteBtn = ()=>{
+        console.log("a")
+        deletePeople({
+            variables : {
+                id,
+                firstName,
+                lastName
+            }, 
+        })
+    }
+
 
     const title = `${firstName} ${lastName}`
 
@@ -40,7 +67,7 @@ export default function({peopleData}){
             {state.isUpdatePeople && <UpdatePeopleForm peopleData={peopleData}/>}
             <div style={btnCon}>
             <Button onClick={clickEditBtn}>Edit</Button>
-            <Button>Delete</Button>
+            <Button onClick={clickDeleteBtn}>Delete</Button>
             </div>
             {isCar ? mapCars : null}
         </Card>

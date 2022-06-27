@@ -34,7 +34,7 @@ export const ADD_PEOPLE = gql`
 `   
 
 export const ADD_CARS = gql`
-        mutation Mutation($year: Int!, $make: String!, $model: String!, $price: Float!, $personId: String!, $id: String!) {
+        mutation Mutation($year: Int!, $make: String!, $model: String!, $price: Float!, $id: String!) {
             addCars(year: $year, make: $make, model: $model, price: $price, personId: $personId, id: $id) {
             id
             year
@@ -64,6 +64,28 @@ export const UPDATE_CAR = gql`
             year
             model
             make
+            price
+            personId
+            }
+        }
+`
+
+export const DELETE_PEOPLE = gql`
+        mutation Mutation($id: String!, $firstName: String!, $lastName: String!) {
+            deletePeople(id: $id, firstName: $firstName, lastName: $lastName) {
+            id
+            firstName
+            lastName
+            }
+        }`
+
+export const DELETE_CAR = gql`
+        mutation Mutation($year: Int!, $make: String!, $model: String!, $price: Float!, $personId: String!, $id: String!) {
+            deleteCar(year: $year, make: $make, model: $model, price: $price, personId: $personId, id: $id) {
+            id
+            year
+            make
+            model
             price
             personId
             }

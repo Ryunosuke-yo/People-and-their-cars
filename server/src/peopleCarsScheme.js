@@ -3,7 +3,7 @@ import { people, cars } from './people_cars.js'
 import pkg from "lodash"
 
 
-const {find} = pkg;
+const {find, remove} = pkg;
 
 
 const typeDefs = gql`
@@ -32,6 +32,8 @@ const typeDefs = gql`
         addCars(year: Int!, make : String!, model: String!, price: Float!, personId: String!, id: String!) : Car
         updatePeople(id : String!, firstName: String!, lastName: String!) : People
         updateCar(year: Int!, make : String!, model: String!, price: Float!, personId: String!, id: String!) : Car
+        deletePeople(id : String!, firstName : String!, lastName : String!) : People
+        deleteCar(year: Int!, make : String!, model: String!, price: Float!, personId: String, id: String!) : Car
       }
 `
 
@@ -70,6 +72,7 @@ const resolvers = {
         cars.push(newCar)
         return newCar
     },
+
     updatePeople (root, args) {
       const peopleToUpdate = find(people, {id : args.id})
       console.log(peopleToUpdate)
@@ -79,6 +82,7 @@ const resolvers = {
 
       return peopleToUpdate
     },
+
     updateCar (root, args) {
       const carToUpdate = find(cars, {id : args.id})
       const {make, model, year, price, personId} = args
@@ -90,6 +94,20 @@ const resolvers = {
       carToUpdate.model = model
 
       return carToUpdate
+    },
+
+    deletePeople (root, args) {
+      const peopleToDelete = find(people, {id : args.id})
+      remove(people, {id :args.id})
+
+      return peopleToDelete
+    },
+
+    deleteCar (root, args) {
+      const carToDelete = find(cars, {id: args.id})
+      remove(cars, {id : args.id})
+
+      return carToDelete
     }
   }
 }
