@@ -17,7 +17,7 @@ export default function(){
     const onClick = (e)=>{
         // console.log(e)
         e.key === "cars" ? navigate("/cars") : 
-            navigate("/people")
+            navigate("people/view")
     }
 
     const items = [

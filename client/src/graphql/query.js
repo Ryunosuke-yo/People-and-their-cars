@@ -23,6 +23,38 @@ export const GET_CAR = gql`
             }
         }
 `
+
+export const PERSON_WITH_CARS = gql`
+        query Query($id: String!) {
+            personWithCars(id: $id) {
+            person {
+                lastName
+                firstName
+                id
+            }
+            cars {
+                id
+                year
+                make
+                model
+                price
+                personId
+            }
+            }
+        }
+`
+
+export const CAR_WITH_PERSON_ID = gql`
+        query Query($personId: String!){
+            carWithPersonId(personId: $personId) {
+                personId
+                price
+                id
+            }
+        }
+`
+
+
 export const ADD_PEOPLE = gql`
         mutation Mutation($id: String!, $firstName: String!, $lastName: String!) {
             addPeople(id: $id, firstName: $firstName, lastName: $lastName) {
@@ -91,3 +123,4 @@ export const DELETE_CAR = gql`
             }
         }
 `
+

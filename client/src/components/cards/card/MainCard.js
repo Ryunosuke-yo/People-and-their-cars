@@ -7,12 +7,15 @@ import { initialState, reducer } from "../../context_reducer/Reducer";
 import UpdatePeopleForm from "../../form/forms/updateForm/UpdatePeopleForm";
 import CarCard from "./subCard/CarCard";
 import { filter } from 'lodash'
+import { useNavigate, useParams } from "react-router-dom";
 
 
 
 export default function({peopleData}){
     const [filteredCars, setFilteredCars] = useState([])
-
+    const navigate = useNavigate()
+    let {personId: params} = useParams()
+    
     const [state, dispatch] = useReducer(reducer, initialState)
     const {isUpdatePeople} = state
 
@@ -58,9 +61,14 @@ export default function({peopleData}){
             }, 
         })
     }
-
-
     const title = `${firstName} ${lastName}`
+
+    const onClickLearn = ()=>{
+        params = id
+        console.log(params)
+        navigate(`/people/show/${params}`)
+    }
+    const LearnMoreBtn =  <Button style={{marginTop : "3rem", width : "100%"}} onClick={onClickLearn}>Learn More</Button>
 
     return (
         <Card title={title}>
@@ -69,7 +77,7 @@ export default function({peopleData}){
             <Button onClick={clickEditBtn}>Edit</Button>
             <Button onClick={clickDeleteBtn}>Delete</Button>
             </div>
-            {isCar ? mapCars : null}
+            {isCar ? mapCars : LearnMoreBtn}
         </Card>
     )
 }

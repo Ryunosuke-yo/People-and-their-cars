@@ -4,10 +4,10 @@ import { Row, Col } from "antd";
 
 export default function({peopleData}){
     
+    
 
         const mapData = peopleData.map(data=> <MainCard peopleData={data} key={data.id} />)
-   
-   
+        
     return (
         <div style={style}>
             {mapData}

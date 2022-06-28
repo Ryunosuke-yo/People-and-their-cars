@@ -1,13 +1,24 @@
 import { useMutation } from "@apollo/client";
 import { Button, Card } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DELETE_CAR, GET_CAR } from "../../../../graphql/query";
 import UpdateCarForm from "../../../form/forms/updateForm/UpdateCarForm";
 import { filter } from 'lodash'
+import { useLocation, useParams } from "react-router-dom";
 
 export default function({car}){
 
     const {year, make, model, price, id, personId} = car
+    const location= useLocation()
+    const [isCarPage, setIsCarPage] = useState(true)
+    
+    useEffect(()=>{
+        if(location.pathname == "/cars"){
+            setIsCarPage(true)
+        } else {
+            setIsCarPage(false)
+        }
+    }, [location])
 
     const [isUpdateCar, setIsUpdateCar] = useState(false)
 
@@ -38,17 +49,27 @@ export default function({car}){
             })
     }
 
+    const formatCurrency = new Intl.NumberFormat("en-US", {
+        style : "currency",
+        currency: "CAD",
+        maximumSignificantDigits: 3
+    })
+
 
     return (
             isUpdateCar ? <UpdateCarForm car={car}/> :
 
             <Card type="inner" style={{margin : "2rem", textAlign: "center"}}>
-                {model} - {make} - {price} - {year}
-            
-                <div style={btnCon}>
-                    <Button size="small" onClick={()=>setIsUpdateCar(prev => !prev)}>Edit</Button>
-                    <Button size="small" onClick={onClickDelete}>Delete</Button>
-                </div>
+                {model} - {make} - {formatCurrency.format(price)} - {year}
+
+                {isCarPage ? 
+                    <div style={btnCon}>
+                        <Button size="small" onClick={()=>setIsUpdateCar(prev => !prev)}>Edit</Button>
+                        <Button size="small" onClick={onClickDelete}>Delete</Button>
+                    </div> 
+                : null
+                }
+                
             </Card>
         
     )

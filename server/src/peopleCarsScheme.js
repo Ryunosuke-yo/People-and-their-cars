@@ -9,10 +9,9 @@ const {find, remove} = pkg;
 const typeDefs = gql`
     type People {
         id : String!
-        firstName : String!
-        lastName : String!
+        firstName : String
+        lastName : String
       }
-
       type Car {
         id: String!
         year: Int!
@@ -21,10 +20,17 @@ const typeDefs = gql`
         price: Float!
         personId: String!
       }
+
+      type Person {
+        person : People
+        cars : [Car]
+      }
+
     
       type Query {
         people: [People]
         cars : [Car]
+        personWithCars(id : String!) : Person
       }
 
       type Mutation {
@@ -44,6 +50,12 @@ const resolvers = {
     },
     cars(){
       return cars
+    },
+    personWithCars(parent, args, context, info){
+      // console.log(args)
+      const carsToFind = cars.filter(car=> car.personId == args.id)
+      const peopleToFind = find(people, {id : args.id})
+      return {person : peopleToFind, cars: carsToFind}
     }
   },
   Mutation : {
@@ -99,6 +111,7 @@ const resolvers = {
     deletePeople (root, args) {
       const peopleToDelete = find(people, {id : args.id})
       remove(people, {id :args.id})
+      remove(cars, {personId : args.id})
 
       return peopleToDelete
     },
@@ -108,7 +121,7 @@ const resolvers = {
       remove(cars, {id : args.id})
 
       return carToDelete
-    }
+    },
   }
 }
 
